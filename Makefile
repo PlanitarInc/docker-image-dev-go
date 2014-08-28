@@ -1,9 +1,13 @@
 # XXX no versioning of the docker image
 
+ifneq ($(NOCACHE),)
+  NOCACHEFLAG=--no-cache
+endif
+
 .PHONY: build push clean test
 
 build:
-	docker build -t planitar/dev-go .
+	docker build ${NOCACHEFLAG} -t planitar/dev-go .
 
 push:
 	docker push planitar/dev-go
