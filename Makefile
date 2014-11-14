@@ -1,4 +1,5 @@
 # XXX no versioning of the docker image
+IMAGE_NAME=planitar/dev-go
 
 ifneq ($(NOCACHE),)
   NOCACHEFLAG=--no-cache
@@ -7,16 +8,16 @@ endif
 .PHONY: build push clean test
 
 build:
-	docker build ${NOCACHEFLAG} -t planitar/dev-go .
+	docker build ${NOCACHEFLAG} -t ${IMAGE_NAME} .
 
 push:
-	docker push planitar/dev-go
+	docker push ${IMAGE_NAME}
 
 clean:
-	docker rmi -f planitar/dev-go || true
+	docker rmi -f ${IMAGE_NAME} || true
 
 test:
-	docker run -d --name test-dev-go planitar/dev-go /bin/bash -lc ' \
+	docker run -d --name test-dev-go ${IMAGE_NAME} /bin/bash -lc ' \
 	  set -xe; \
 	  go version || exit 1; \
 	  test ! -e $$GOPATH/bin/plntr-go-test || exit 1; \
