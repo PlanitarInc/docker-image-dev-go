@@ -31,3 +31,17 @@ test:
 	  false; \
 	fi
 	docker rm -f test-dev-go
+	@# Test godep
+	docker run -d --name test-dev-go ${IMAGE_NAME} /bin/bash -lc ' \
+	  set -xe; \
+	  PKG=github.com/PlanitarInc/docker-image-dev-go/test/plntr-godep-test; \
+	  go get $$PKG || exit 1; \
+	  cd $$GOPATH/src/$$PKG; \
+	  godep go build || exit 1; \
+	'
+	if ! docker wait test-dev-go | grep 0; then \
+	  docker logs test-dev-go >&2; \
+	  docker rm -f test-dev-go; \
+	  false; \
+	fi
+	docker rm -f test-dev-go
