@@ -45,3 +45,15 @@ test:
 	  false; \
 	fi
 	docker rm -f test-dev-go
+	@# Test go-tools
+	docker run -d --name test-dev-go ${IMAGE_NAME} /bin/bash -lc ' \
+	  set -xe; \
+	  gob github.com/PlanitarInc/docker-image-dev-go/test/plntr-go-test || exit 1; \
+	  gob github.com/PlanitarInc/docker-image-dev-go/test/plntr-godep-test || exit 1; \
+	'
+	if ! docker wait test-dev-go | grep 0; then \
+	  docker logs test-dev-go >&2; \
+	  docker rm -f test-dev-go; \
+	  false; \
+	fi
+	docker rm -f test-dev-go
