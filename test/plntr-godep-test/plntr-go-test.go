@@ -2,10 +2,10 @@ package main
 
 import (
 	plntrdep "github.com/PlanitarInc/docker-image-dev-go/test/plntr-dep"
-	"github.com/coreos/go-etcd/etcd"
+	"github.com/lib/pq"
 )
 
 func main() {
-	_ = &etcd.Client{}
+	_ = &pq.Error{}
 	plntrdep.PlntrDepTest()
 }
