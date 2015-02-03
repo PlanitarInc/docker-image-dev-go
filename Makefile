@@ -19,11 +19,11 @@ clean:
 test:
 	docker run -d --name test-dev-go ${IMAGE_NAME} /bin/bash -lc ' \
 	  set -xe; \
-	  go version || exit 1; \
-	  test ! -e $$GOPATH/bin/plntr-go-test || exit 1; \
-	  go get github.com/PlanitarInc/docker-image-dev-go/test/plntr-go-test || exit 1; \
-	  test -e $$GOPATH/bin/plntr-go-test || exit 1; \
-	  diff `which plntr-go-test` $$GOPATH/bin/plntr-go-test || exit 1; \
+	  go version; \
+	  test ! -e $$GOPATH/bin/plntr-go-test; \
+	  go get github.com/PlanitarInc/docker-image-dev-go/test/plntr-go-test; \
+	  test -e $$GOPATH/bin/plntr-go-test; \
+	  diff `which plntr-go-test` $$GOPATH/bin/plntr-go-test; \
 	'
 	if ! docker wait test-dev-go | grep 0; then \
 	  docker logs test-dev-go >&2; \
@@ -35,9 +35,9 @@ test:
 	docker run -d --name test-dev-go ${IMAGE_NAME} /bin/bash -lc ' \
 	  set -xe; \
 	  PKG=github.com/PlanitarInc/docker-image-dev-go/test/plntr-godep-test; \
-	  go get $$PKG || exit 1; \
+	  go get $$PKG; \
 	  cd $$GOPATH/src/$$PKG; \
-	  godep go build || exit 1; \
+	  godep go build; \
 	'
 	if ! docker wait test-dev-go | grep 0; then \
 	  docker logs test-dev-go >&2; \
@@ -48,8 +48,8 @@ test:
 	@# Test go-tools
 	docker run -d --name test-dev-go ${IMAGE_NAME} /bin/bash -lc ' \
 	  set -xe; \
-	  gob github.com/PlanitarInc/docker-image-dev-go/test/plntr-go-test || exit 1; \
-	  gob github.com/PlanitarInc/docker-image-dev-go/test/plntr-godep-test || exit 1; \
+	  gob github.com/PlanitarInc/docker-image-dev-go/test/plntr-go-test; \
+	  gob github.com/PlanitarInc/docker-image-dev-go/test/plntr-godep-test; \
 	'
 	if ! docker wait test-dev-go | grep 0; then \
 	  docker logs test-dev-go >&2; \
