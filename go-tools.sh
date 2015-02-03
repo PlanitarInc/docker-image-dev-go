@@ -1,10 +1,31 @@
-# vim: ft=bash sw=2 et :
+# vim: ft=sh sw=2 et :
 
-gob() {
+gocd() {
+  local pkg="$1"
+
+  cd "${GOPATH}/src/${pkg}"
+}
+
+gobld() {
   local pkg="$1"
 
   (
-    go get "${pkg}" && cd "${GOPATH}/src/${pkg}" && 
-      { godep go build || ! test -d Godeps; }
+    set -ex
+    go get "${pkg}"
+    if [ -d "${GOPATH}/src/${pkg}/Godeps" ]; then
+      cd "${GOPATH}/src/${pkg}"
+      godep go build
+      echo `pwd`
+    else
+      echo "${GOPATH}/bin"
+    fi
   )
+}
+
+gobldcp() {
+  local pkg="$1"
+  local binary="$2"
+  local out="$3"
+
+  cp `gobld "$pkg"`/"$binary" "$out"
 }

@@ -48,8 +48,16 @@ test:
 	@# Test go-tools
 	docker run -d --name test-dev-go ${IMAGE_NAME} /bin/bash -lc ' \
 	  set -xe; \
-	  gob github.com/PlanitarInc/docker-image-dev-go/test/plntr-go-test; \
-	  gob github.com/PlanitarInc/docker-image-dev-go/test/plntr-godep-test; \
+	  pkg="github.com/PlanitarInc/docker-image-dev-go/test/plntr-go-test"; \
+	  bd=`gobld $$pkg`; \
+	  test $$bd == $$GOPATH/bin; \
+	  gobldcp $$pkg plntr-go-test /tmp; \
+	  diff $$bd/plntr-go-test /tmp/plntr-go-test; \
+	  pkg="github.com/PlanitarInc/docker-image-dev-go/test/plntr-godep-test"; \
+	  bd=`gobld $$pkg`; \
+	  test $$bd == $$GOPATH/src/$$pkg; \
+	  gobldcp $$pkg plntr-godep-test /tmp; \
+	  diff $$bd/plntr-godep-test /tmp/plntr-godep-test; \
 	'
 	if ! docker wait test-dev-go | grep 0; then \
 	  docker logs test-dev-go >&2; \
