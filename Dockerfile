@@ -1,7 +1,18 @@
 FROM planitar/dev-base
 
-RUN sudo apt-get install -y golang && sudo apt-get clean
+ENV GO_PACKAGE go1.4.2.linux-amd64
 
+USER root
+RUN mkdir /tmp/go-install && cd /tmp/go-install && \
+    wget -nv https://storage.googleapis.com/golang/${GO_PACKAGE}.tar.gz && \
+    tar xzf ${GO_PACKAGE}.tar.gz && \
+    cp ./go/bin/go /usr/bin && \
+    cp ./go/bin/gofmt /usr/bin && \
+    cp -r ./go /usr/lib/go && \
+    cd /tmp && rm -rf ./go-install
+USER planitar
+
+ENV GOROOT=/usr/lib/go
 ENV GOPATH=${HOME}/go-dev
 ENV PATH=${PATH}:${GOPATH}/bin
 
