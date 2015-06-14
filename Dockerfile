@@ -9,6 +9,7 @@ RUN mkdir /tmp/go-install && cd /tmp/go-install && \
     cp ./go/bin/go /usr/bin && \
     cp ./go/bin/gofmt /usr/bin && \
     cp -r ./go /usr/lib/go && \
+    chown -R planitar:root /usr/lib/go/ && \
     cd /tmp && rm -rf ./go-install
 USER planitar
 
