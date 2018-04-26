@@ -1,6 +1,6 @@
 FROM planitar/dev-base
 
-ENV GO_PACKAGE go1.9.3.linux-amd64
+ENV GO_PACKAGE go1.10.1.linux-amd64
 
 USER root
 RUN mkdir /tmp/go-install && cd /tmp/go-install && \
